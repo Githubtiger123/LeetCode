@@ -21,7 +21,7 @@ public class L343 {
         for (int i = 2; i <= n; i++) {
 
             dp[i] = 0;
-            for (int j = 1; j < i; j++) {
+            for (int j = 1; j <= i/2; j++) {
                 int t = Math.max(j * (i - j), j * dp[i - j]);
                 dp[i] = Math.max(dp[i], t);
             }
