@@ -52,7 +52,8 @@ public class L1143 {
 //        for (int k = 0; k < i; k++) {
 //            Arrays.fill(dp[k], -1);
 //        }
-//        return func(text1.toCharArray(), text2.toCharArray(), text1.length() - 1, text2.length() - 1, dp);
+//        return func(text1.toCharArray(), text2.toCharArray()
+//        0.2, text1.length() - 1, text2.length() - 1, dp);
 //    }
 //
 //    public int func(char[] text1, char[] text2, int i, int j, int[][] dp) {
