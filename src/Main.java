@@ -1,17 +1,44 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
-public class Main {
+import java.util.*;
+
+class Main {
+    static class Patient {
+        String id;
+        int age;
+
+        public Patient(String id, int age) {
+            this.id = id;
+            this.age = age;
+        }
+    }
+
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();  // 病人个数
+        List<Patient> patients = new ArrayList<>();
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        // 输入病人信息
+        for (int i = 0; i < n; i++) {
+            String id = scanner.next();
+            int age = scanner.nextInt();
+            patients.add(new Patient(id, age));
+        }
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        // 按照规则排序病人
+        patients.sort((p1, p2) -> {
+            if (p1.age >= 60 && p2.age < 60) {
+                return -1;
+            } else if (p1.age < 60 && p2.age >= 60) {
+                return 1;
+            } else if (p1.age >= 60 && p2.age >= 60) {
+                return Integer.compare(p2.age, p1.age);
+            } else {
+                return 0;
+            }
+        });
+
+        // 输出病人编号
+        for (Patient patient : patients) {
+            System.out.println(patient.id);
         }
     }
 }
