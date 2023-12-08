@@ -2,6 +2,8 @@ package com.enumeration.java;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 //287. 寻找重复数
 public class L287 {
 
@@ -13,13 +15,24 @@ public class L287 {
 
     public int findDuplicate(int[] nums) {
 
+        Arrays.sort(nums);
         for (int i = 0; i < nums.length - 1; i++) {
-            for (int j = i + 1; j < nums.length; j++) {
-                if (nums[i] == nums[j]) {
-                    return nums[i];
-                }
+            if (nums[i] == nums[i + 1]) {
+                return nums[i];
             }
         }
         return 0;
     }
+
+//    public int findDuplicate(int[] nums) {
+//
+//        for (int i = 0; i < nums.length - 1; i++) {
+//            for (int j = i + 1; j < nums.length; j++) {
+//                if (nums[i] == nums[j]) {
+//                    return nums[i];
+//                }
+//            }
+//        }
+//        return 0;
+//    }
 }
