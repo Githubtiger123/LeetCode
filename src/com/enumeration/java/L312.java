@@ -14,27 +14,44 @@ public class L312 {
 
     public int maxCoins(int[] nums) {
 
-        return dfs(nums, 0, nums.length - 1);
+        int[] used = new int[nums.length];
+        return dfs(nums, 0, nums.length - 1, used);
     }
 
-    public int dfs(int[] nums, int left, int right) {
+    public int dfs(int[] nums, int left, int right, int[] used) {
         int max = Integer.MIN_VALUE;
         if (left > right) {
             return 0;
         } else if (left == right) {
             return nums[left];
         } else {
-            int l = left - 2 < 0 ? 1 : nums[left - 2];
-            int r = right + 2 > nums.length - 1 ? 1 : nums[right + 2];
+
+            int l = 1;
+            int r = 1;
+
+            for (int i = left - 1; i >= 0; i--) {
+                if (used[i] != -1) {
+                    l = nums[i];
+                    break;
+                }
+            }
+            for (int i = right + 1; i < nums.length; i++) {
+                if (used[i] != -1) {
+                    r = nums[i];
+                    break;
+                }
+            }
 
             for (int i = left; i <= right; i++) {
+                used[i] = -1;
                 if (i == left) {
-                    max = Math.max(max, l * nums[i] * nums[i + 1] + dfs(nums, left, i - 1) + dfs(nums, i + 1, right));
+                    max = Math.max(max, l * nums[i] * nums[i + 1] + dfs(nums, i + 1, right, used));
                 } else if (i == right) {
-                    max = Math.max(max, r * nums[i] * nums[i - 1] + dfs(nums, left, i - 1) + dfs(nums, i + 1, right));
+                    max = Math.max(max, r * nums[i] * nums[i - 1] + dfs(nums, left, i - 1, used));
                 } else {
-                    max = Math.max(max, nums[i - 1] * nums[i] * nums[i + 1] + dfs(nums, left, i - 1) + dfs(nums, i + 1, right));
+                    max = Math.max(max, nums[i - 1] * nums[i] * nums[i + 1] + dfs(nums, left, i - 1, used) + dfs(nums, i + 1, right, used));
                 }
+                used[i] = 0;
             }
         }
         return max;
