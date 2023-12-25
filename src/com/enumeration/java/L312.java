@@ -11,10 +11,10 @@ public class L312 {
     public void test() {
         System.out.println(maxCoins(new int[]{1, 5, 1}));
         System.out.println(maxCoins(new int[]{3, 1, 5, 8}));
+        System.out.println(maxCoins(new int[]{8, 2, 6, 8, 9, 8, 1, 4, 1, 5, 3, 0, 7, 7, 0, 4, 2, 2, 5, 5}));
     }
 
-
-    //方法一:暴力递归
+    //方法三:动态规划
     public int maxCoins(int[] nums) {
 
         int n = nums.length + 2;
@@ -24,22 +24,91 @@ public class L312 {
         for (int i = 0; i < n - 2; i++) {
             new_nums[i + 1] = nums[i];
         }
-        return dfs(new_nums, 1, n - 2);
+        int[][] dp = new int[n][n];
+        for (int i = 1; i < n - 1; i++) {
+            dp[i][i] = new_nums[i - 1] * new_nums[i] * new_nums[i + 1];
+        }
+
+        for (int left = n - 3; left >= 1; left--) {
+            for (int right = left; right < n - 1; right++) {
+                int ans;
+                ans = Math.max(new_nums[left - 1] * new_nums[left] * new_nums[right + 1] + dp[left + 1][right], new_nums[right] * new_nums[left - 1] * new_nums[right + 1] + dp[left][right - 1]);
+
+                for (int i = left + 1; i <= right - 1; i++) {
+                    ans = Math.max(ans, new_nums[left - 1] * new_nums[i] * new_nums[right + 1] + dp[i + 1][right] + dp[left][i - 1]);
+                }
+                dp[left][right] = ans;
+            }
+        }
+
+        return dp[1][n - 2];
     }
 
-    public int dfs(int[] nums, int left, int right) {
 
+    //方法二:记忆化搜索
+    public int maxCoins1(int[] nums) {
+
+        int n = nums.length + 2;
+        int[] new_nums = new int[n];
+        new_nums[0] = 1;
+        new_nums[n - 1] = 1;
+        for (int i = 0; i < n - 2; i++) {
+            new_nums[i + 1] = nums[i];
+        }
+        int[][] dp = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], -1);
+        }
+        return dfs(new_nums, 1, n - 2, dp);
+    }
+
+    public int dfs(int[] nums, int left, int right, int[][] dp) {
+
+        if (dp[left][right] != -1) {
+            return dp[left][right];
+        }
+
+        int ans;
         if (left == right) {
-            return nums[left - 1] * nums[left] * nums[right + 1];
+            ans = nums[left - 1] * nums[left] * nums[right + 1];
         } else {
-            int max = Math.max(nums[left - 1] * nums[left] * nums[right + 1] + dfs(nums, left + 1, right), nums[right] * nums[left - 1] * nums[right + 1] + dfs(nums, left, right - 1));
+            ans = Math.max(nums[left - 1] * nums[left] * nums[right + 1] + dfs(nums, left + 1, right, dp), nums[right] * nums[left - 1] * nums[right + 1] + dfs(nums, left, right - 1, dp));
 
             for (int i = left + 1; i <= right - 1; i++) {
-                max = Math.max(max, nums[left - 1] * nums[i] * nums[right + 1] + dfs(nums, i + 1, right) + dfs(nums, left, i - 1));
+                ans = Math.max(ans, nums[left - 1] * nums[i] * nums[right + 1] + dfs(nums, i + 1, right, dp) + dfs(nums, left, i - 1, dp));
             }
-            return max;
         }
+        dp[left][right] = ans;
+        return ans;
     }
+
+
+    //方法一:暴力递归
+//    public int maxCoins(int[] nums) {
+//
+//        int n = nums.length + 2;
+//        int[] new_nums = new int[n];
+//        new_nums[0] = 1;
+//        new_nums[n - 1] = 1;
+//        for (int i = 0; i < n - 2; i++) {
+//            new_nums[i + 1] = nums[i];
+//        }
+//        return dfs(new_nums, 1, n - 2);
+//    }
+//
+//    public int dfs(int[] nums, int left, int right) {
+//
+//        if (left == right) {
+//            return nums[left - 1] * nums[left] * nums[right + 1];
+//        } else {
+//            int max = Math.max(nums[left - 1] * nums[left] * nums[right + 1] + dfs(nums, left + 1, right), nums[right] * nums[left - 1] * nums[right + 1] + dfs(nums, left, right - 1));
+//
+//            for (int i = left + 1; i <= right - 1; i++) {
+//                max = Math.max(max, nums[left - 1] * nums[i] * nums[right + 1] + dfs(nums, i + 1, right) + dfs(nums, left, i - 1));
+//            }
+//            return max;
+//        }
+//    }
 
     //自己写的(不对,回溯思路)
 //    public int maxCoins(int[] nums) {
