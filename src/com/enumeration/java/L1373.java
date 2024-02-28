@@ -3,7 +3,7 @@ package com.enumeration.java;
 
 public class L1373 {
 
-    public class TreeNode {
+    private class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
@@ -22,7 +22,7 @@ public class L1373 {
         }
     }
 
-    public class Info {
+    private class Info {
         public long max;
         public long min;
         public boolean isBst;
@@ -38,7 +38,7 @@ public class L1373 {
         }
     }
 
-    public Info func(TreeNode tree) {
+    private Info func(TreeNode tree) {
         if (tree == null) {
             return new Info(Long.MIN_VALUE, Long.MAX_VALUE, true, 0, 0);
         }
