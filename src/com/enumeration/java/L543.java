@@ -36,26 +36,38 @@ public class L543 {
 //        }
 //    }
 
-    private class Info{
+    private class Info {
+        public int max_Size;
+        public int max_Left;
+        public int max_Right;
+        public int res;
 
-        public int diameter;
-        public int high;
 
-        public Info(int diameter, int high) {
-            this.diameter = diameter;
-            this.high = high;
+        public Info(int max_Size, int max_Left, int max_Right, int res) {
+            this.max_Size = max_Size;
+            this.max_Left = max_Left;
+            this.max_Right = max_Right;
+            this.res = res;
         }
     }
 
-    public Info func(TreeNode tree){
+    public Info func(TreeNode tree) {
 
-        if(tree == null){
-            return new Info(0,0);
-        }else {
-            Info L = func(tree.left);
-            Info R = func(tree.right);
-            int diameter = tree.left.
+        if (tree == null) {
+            return new Info(0, 0, 0, 0);
         }
+        Info L = func(tree.left);
+        Info R = func(tree.right);
+        int max_Left = L.max_Size + 1;
+        int max_Right = R.max_Size + 1;
+        int result = max_Left + max_Right;
+        result = Math.max(result, Math.max(L.res, R.res));
+        return new Info(Math.max(max_Left, max_Right), max_Left, max_Right, result);
+    }
+
+    public int diameterOfBinaryTree(TreeNode root) {
+
+        return func(root).res - 2;
     }
 
 //    public Info func(TreeNode tree) {
