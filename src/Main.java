@@ -1,20 +1,9 @@
 import java.util.*;
 
 class Main {
-    static class Patient {
-        String id;
-        int age;
-
-        public Patient(String id, int age) {
-            this.id = id;
-            this.age = age;
-        }
-    }
-
 
     public static void main(String[] args) {
 
-        System.out.println();
-
+        System.out.println("0000110000".replaceAll("^0+|0+$", ""));
     }
 }
