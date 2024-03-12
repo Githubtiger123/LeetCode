@@ -13,7 +13,6 @@ public class L1792 {
 
     public double maxAverageRatio(int[][] classes, int extraStudents) {
 
-
         double sum = 0, n = classes.length;
         PriorityQueue<int[]> queue = new PriorityQueue<>(new Comparator<int[]>() {
             @Override
@@ -25,19 +24,15 @@ public class L1792 {
 
 //        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> Double.compare(((b[0] + 1.0) / (b[1] + 1.0) - (double) b[0] / b[1]), ((a[0] + 1.0) / (a[1] + 1.0) - (double) a[0] / a[1])));
         for (int i = 0; i < n; i++) {
-            queue.add(classes[i]);
+            queue.offer(classes[i]);
         }
 
         while (!queue.isEmpty() && extraStudents != 0) {
 
             int[] poll = queue.poll();
-            if (poll[0] == poll[1]) {
-                sum++;
-                continue;
-            }
             poll[0]++;
             poll[1]++;
-            queue.add(poll);
+            queue.offer(poll);
             extraStudents--;
         }
         while (!queue.isEmpty()) {
