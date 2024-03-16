@@ -155,12 +155,66 @@ public class L639 {
     }
 
 
-    public int numDecodings(String s) {
+    public int numDecodings1(String s) {
 
         long[] dp = new long[s.length() + 1];
         Arrays.fill(dp, Long.MIN_VALUE);
 //        return (int) (func1(s.toCharArray(), 0, dp) %  (10e9 + 7));
         return (int) (func1(s.toCharArray(), 0, dp));
+    }
+
+    public int numDecodings(String s) {
+
+        int n = s.length();
+        long[] dp = new long[n + 1];
+        dp[n] = 1;
+        char[] chars = s.toCharArray();
+        for (int index = n - 1; index >= 0; index--) {
+
+            long ans = 0;
+            if (index == chars.length) {
+                ans = 1;
+            } else if (chars[index] == '0') {
+                ans = 0;
+            } else {
+                ans = dp[index + 1] * (chars[index] == '*' ? 9 : 1);
+                if (index + 1 < chars.length) {
+
+                    if (chars[index] != '*') {
+
+                        if (chars[index + 1] != '*') {
+
+                            if ((chars[index] - '0') * 10 + chars[index + 1] - '0' <= 26) {
+                                ans += dp[index + 2];
+                            }
+                        } else {//num *
+
+                            if (chars[index] == '1') {
+                                ans += dp[index + 2] * 9;
+                            } else if (chars[index] == '2') {
+                                ans += dp[index + 2] * 6;
+                            }
+                        }
+                    } else {
+
+                        if (chars[index + 1] != '*') { //* num
+                            if (chars[index + 1] <= '6') {
+                                ans += dp[index + 2] * 2;
+                            } else {
+                                ans += dp[index + 2];
+                            }
+                        } else {//* *
+                            ans += dp[index + 2] * 15;
+                        }
+
+                    }
+                }
+
+            }
+            ans %= (1000000007);
+            dp[index] = ans;
+        }
+        return (int) dp[0];
     }
 
     @Test
