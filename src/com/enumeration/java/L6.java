@@ -2,11 +2,13 @@ package com.enumeration.java;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 //6. Z 字形变换
 public class L6 {
 
 
-    public String convert(String s, int numRows) {
+    public String convert1(String s, int numRows) {
 
         if (numRows == 1) {
             return s;
@@ -46,6 +48,47 @@ public class L6 {
                 }
                 stringBuilder.append(arr[yy][xx]);
             }
+        }
+        return stringBuilder.toString();
+    }
+
+    public String convert(String s, int numRows) {
+
+        if (numRows == 1) {
+            return s;
+        }
+
+        ArrayList<StringBuilder> list = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            list.add(new StringBuilder());
+        }
+        int n = s.length();
+        char[] chars = s.toCharArray();
+        boolean b = false;
+        int y = 0;
+        for (int i = 0; i < n; i++) {
+            if (y < 0) {
+                y = 1;
+                b = false;
+            }
+
+            if (y >= numRows) {
+
+                y = numRows - 2;
+                b = true;
+            }
+            if (b) {
+                list.get(y).append(chars[i]);
+                y--;
+            } else {
+                list.get(y).append(chars[i]);
+                y++;
+            }
+
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < numRows; i++) {
+            stringBuilder.append(list.get(i));
         }
         return stringBuilder.toString();
     }
