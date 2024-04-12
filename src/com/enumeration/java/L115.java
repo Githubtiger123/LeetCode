@@ -115,6 +115,7 @@ public class L115 {
 
         System.out.println(numDistinct("rabbbit", "rabbit"));
         System.out.println(numDistinct("babgbag", "bag"));
+
     }
 
 }
