@@ -31,6 +31,23 @@ public class L213 {
         return dp[n - 1];
     }
 
+    public int rob2(int[] nums) {
+
+        int n = nums.length;
+        if (n == 1) return nums[0];
+        int a, b, c = 0;
+        a = nums[0];
+        c = b = Math.max(nums[1], nums[0]);
+
+        for (int i = 2; i < n; i++) {
+            c = Math.max(b, nums[i] + a);
+            a = b;
+            b = c;
+        }
+
+        return c;
+    }
+
     @Test
     public void test() {
         System.out.println(rob(new int[]{2, 1, 1, 2}));
