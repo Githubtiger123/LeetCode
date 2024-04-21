@@ -1,78 +1,40 @@
-import java.util.Arrays;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
+/**
+ *
+ * @author 长白崎
+ * @class["第十五届蓝桥杯JavaB组"]
+ */
 public class Main {
-
-    static int func(char[] chars, int index) {
-
-        if (index == chars.length) {
-            return 1;
-        } else if (chars[index] == '0') {
-            return 0;
-        } else {
-            int ans = 0;
-            if (index + 1 < chars.length && (chars[index] - '0') * 10 + chars[index + 1] - '0' <= 26) {
-
-                ans += func(chars, index + 2);
-            }
-            ans += func(chars, index + 1);
-
-            return ans;
-        }
-    }
-
-    static int func1(char[] chars, int index, int[] dp) {
-
-        if (dp[index] != Integer.MIN_VALUE) {
-            return dp[index];
-        }
-
-        int ans = 0;
-        if (index == chars.length) {
-            ans = 1;
-        } else if (chars[index] == '0') {
-            ans = 0;
-        } else {
-            if (index + 1 < chars.length && (chars[index] - '0') * 10 + chars[index + 1] - '0' <= 26) {
-
-                ans += func1(chars, index + 2, dp);
-            }
-            ans += func1(chars, index + 1, dp);
-        }
-        dp[index] = ans;
-        return ans;
-    }
-
-
-    public static int numDecodings(String s) {
-//        int n = s.length();
-//        int[] dp = new int[n + 1];
-//        Arrays.fill(dp, Integer.MIN_VALUE);
-//        return func1(s.toCharArray(), 0, dp);
-
-        int n = s.length();
-        int[] dp = new int[n + 1];
-        char[] chars = s.toCharArray();
-        dp[n] = 1;
-        for (int i = n - 1; i >= 0; i--) {
-
-            if (chars[i] == '0') {
-                dp[i] = 0;
-            } else {
-                dp[i] = dp[i + 1];
-                if (i + 1 < chars.length && (chars[i] - '0') * 10 + chars[i + 1] - '0' <= 26) {
-
-                    dp[i] += dp[i + 2];
-                }
-
-            }
-        }
-        return dp[0];
-    }
+    final static PrintWriter out = new PrintWriter(System.out);//快输
 
     public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        long vi[] = new long[n];//vi[0]为主队列,1到(n-1)为副队列
+        while (sc.hasNext()) {
+            String op = sc.next();
+            if (op.equals("add")) {
+                int i = sc.nextInt();
+                ++vi[0];//增加主队列元素总数
+            } else if (op.equals("sync")) {
+                int i = sc.nextInt();
+                vi[i] = vi[0] < vi[i] + 1 ? vi[i] : vi[i] + 1;//同步副队列i中的个数
+            } else if (op.equals("query")) {
+                out.println(find(vi));//输出同步最小总数
+            }
+        }
+        out.flush();
+        out.close();
+    }
 
-        System.out.println(numDecodings("11106"));
-        System.out.println(numDecodings("12"));
-        System.out.println(numDecodings("226"));
+    static long find(long arr[]) {
+        long min = 0x3f3f3f3f;//比较取出最小同步总数
+        for (int i = 0; i < arr.length; ++i) {
+            min = Math.min(min, arr[i]);
+        }
+        return min;
     }
 }
